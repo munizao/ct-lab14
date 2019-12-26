@@ -90,7 +90,6 @@ describe('dance routes', () => {
   });
 
   it('updates a dance if logged in', async() => {
-    console.log(exampleDance);
     await User.create({
       email: 'test@test.com',
       password: 'password'
@@ -100,14 +99,12 @@ describe('dance routes', () => {
     await agent
       .post('/api/v1/auth/login')
       .send({ email: 'test@test.com', password: 'password' });
-    console.log(exampleDance);
     return agent
       .patch(`/api/v1/dance/${exampleDance.id}`)
       .send({
         name: 'Sherrif\'s Ride',
       })
       .then(res => {
-        console.log(res.body);
         return expect(res.body).toEqual({
           _id: expect.any(String),
           figures: [],
