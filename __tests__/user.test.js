@@ -46,10 +46,27 @@ describe('auth routes', () => {
       });
   });
   it('login route fails when email is not in db', () => {
-
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'bademail@test.com', password: 'password' })
+      .then(res => {
+        expect(res.body).toEqual({
+          message: 'Invalid Email/Password',
+          status: 401,
+        });
+      });
   });
-  it('login route fails on wrong password', () => {
-
+  it('login route fails on wrong password', async() => {
+    const user = await User.create({ email: 'test@test.com', password: 'password' });
+    return request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'test@test.com', password: 'badpassword' })
+      .then(res => {
+        expect(res.body).toEqual({
+          message: 'Invalid Email/Password',
+          status: 401,
+        });
+      });
   });
   it('verifies a user is logged in', async() => {
     const user = await User.create({
