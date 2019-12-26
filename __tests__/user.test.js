@@ -57,7 +57,7 @@ describe('auth routes', () => {
       });
   });
   it('login route fails on wrong password', async() => {
-    const user = await User.create({ email: 'test@test.com', password: 'password' });
+    await User.create({ email: 'test@test.com', password: 'password' });
     return request(app)
       .post('/api/v1/auth/login')
       .send({ email: 'test@test.com', password: 'badpassword' })
